@@ -1,0 +1,68 @@
+#design{
+    width: 1080px;
+    height: 1080px;
+}
+
+#background{
+    width: 1080px;
+    height: 1080px;
+    flex-shrink: 0;
+    fill: #D9D9D9;
+    z-index:0;
+    position:absolute;
+}
+
+#authorImage{
+    width: 751px;
+    height: 660px;
+    flex-shrink: 0;
+    position:absolute;
+    top:720px;
+    margin-left:640px;
+    z-index:1;
+}
+
+#text{
+    display: flex;
+    width: 798px;
+    height: 250px;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #faf8f8;
+    text-align: center;
+    font-family: Kite One;
+    font-size: 58px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    position:absolute;
+    z-index: 2;
+    left:115px;
+    top:260px;
+}
+
+#mybutton{
+    position:absolute;
+    top:1090px;
+}
+
+#author{
+    display: flex;
+   width: 798px;
+   height: 527px;
+   flex-direction: column;
+   justify-content: center;
+   flex-shrink: 0;
+   color: #f8f3f3;
+   text-align: center;
+   font-family: Kite One;
+   font-size: 58px;
+   font-style: normal;
+   font-weight: 400;
+   line-height: normal;
+   position:absolute;
+   z-index: 2;
+   left:110px;
+   top:580px;
+}
