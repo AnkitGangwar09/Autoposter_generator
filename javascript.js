@@ -1,22 +1,30 @@
-function handleClick() {
-  fetch('https://stoic-quotes.com/api/quote')
-    .then(data => data.json())
-    .then(QuoteData => {
+
+async function handleClick() {
+  fetch("https://stoic-quotes.com/api/quote")
+    .then((response) => response.json())
+    .then(async (QuoteData) => {
       const Quote = QuoteData.text;
       const Author = QuoteData.author;
-      handleNewJoke(Quote, Author);
-    })
 
+      // Update image and display quote
+      updateImage(Author);
+      setTimeout(updateDisplay(Quote, Author), 85000);
+
+      // Generate and download poster
+      const posterBlob = await generatePoster();
+      downloadBlob(posterBlob, "poster.png");
+    })
+    .catch((error) => console.error("Error fetching quote:", error));
 }
 
 function updateImage(author) {
-  let imagePath = "Marcus.png";
+  let imagePath = "";
 
   if (author === "Marcus Aurelius") {
-    imagePath = "Marcus.png";
+    imagePath = "Marcus Aurelius.png";
   } else if (author === "Seneca") {
     imagePath = "Seneca.png";
-  } else if (author === "Epictetus.png") {
+  } else if (author === "Epictetus") {
     imagePath = "Epictetus.png";
   } else {
     console.log("Author not found!");
@@ -29,49 +37,28 @@ function updateImage(author) {
   }
 }
 
-function handleNewJoke(Quote, Author) {
-  let n = Quote.length;
-  let i = 0, j = 0, count = 0;
-
-  for (i = 0; i < n; i++) {
-    if (Quote[i] == " " && count == 6) {
-      Quote[i] = "\n";
-    }
-    if (Quote[i] == " ") {
-      count = count + 1;
-    }
-  }
-
-  updateImage(Author);
-  const mytimeout1 = setTimeout(updateDisplay(Quote, Author), 50000);
-  mytimeout1;
-
-}
-
-
 function updateDisplay(Quote, Author) {
-  const outputElement = document.getElementById('text');
-  const outputElement1 = document.getElementById('author');
-  outputElement.innerHTML = Quote;
-  outputElement1.innerHTML = Author;
-
-  const mytimeout2 = setTimeout(generateAndDownloadPoster(), 200000);
-  mytimeout2;
+  document.getElementById("text").innerHTML = Quote;
+  document.getElementById("author").innerHTML = Author;
 }
 
-function generateAndDownloadPoster() {
-  let a = 1;
-  const design = document.getElementById('design');
-  html2canvas(design).then(canvas => {
-    const link = document.createElement('a');
-    link.download = `poster${a}.png`; // Download each poster with a unique name
-    link.href = canvas.toDataURL('image/png');
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+// ✅ Generate Poster using Canvas
+async function generatePoster() {
+  const design = document.getElementById("design");
+  return html2canvas(design).then((canvas) => {
+    return new Promise((resolve) => {
+      canvas.toBlob((blob) => resolve(blob), "image/png");
+    });
   });
-}       
+}
 
+// ✅ Download blob as a file
+function downloadBlob(blob, filename) {
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 
-// one time it will work perfectly.click on button ,, anh poster will be downloaded
